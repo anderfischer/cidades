@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferramenta de Limpeza de Texto | Remover Caracteres Específicos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="app-card">
+            <div class="app-header">
+                <h1><i class="fas fa-text-width"></i> Ferramenta de Limpeza de Texto</h1>
+                <p>Remova caracteres específicos, acentos e formate seu texto</p>
+            </div>
+            
+            <div class="app-body">
+                <div class="file-upload">
+                    <input type="file" id="arquivo" class="file-upload-input" accept=".txt,.csv">
+                    <label for="arquivo" class="file-upload-label">
+                        <i class="fas fa-file-upload"></i> Selecionar Arquivo (TXT/CSV)
+                    </label>
+                    <div id="file-name" class="file-name">Nenhum arquivo selecionado</div>
+                </div>
+                
+                <div id="error" class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="error-text"></span>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option-group">
+                        <div class="option-title">
+                            <i class="fas fa-backspace"></i> Remover Caracteres Específicos
+                        </div>
+                        <div class="option-description">
+                            Digite os caracteres que deseja remover (ex: !@#$%^&*)
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="chars-to-remove" class="char-input" placeholder="Ex: !@# ou 123 ou abc">
+                            <button id="btn-remove-chars" class="btn-remove">Atualizar Pré-visualização</button>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <div class="option-title">
+                            <i class="fas fa-sliders-h"></i> Opções Adicionais
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="remove-accents" checked>
+                            <label for="remove-accents">Remover acentos (é → e, ç → c)</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="remove-special-chars">
+                            <label for="remove-special-chars">Remover caracteres especiais (!@#$%^&*)</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="remove-numbers">
+                            <label for="remove-numbers">Remover números (0-9)</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="trim-spaces" checked>
+                            <label for="trim-spaces">Remover espaços extras no início/fim</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="remove-duplicates">
+                            <label for="remove-duplicates">Remover linhas duplicadas</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="remove-empty-lines">
+                            <label for="remove-empty-lines">Remover linhas em branco</label>
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <div class="option-title">
+                            <i class="fas fa-font"></i> Conversão de Texto
+                        </div>
+                        <div class="radio-group">
+                            <input type="radio" id="case-none" name="case-conversion" checked>
+                            <label for="case-none">Manter como está</label>
+                        </div>
+                        <div class="radio-group">
+                            <input type="radio" id="case-upper" name="case-conversion">
+                            <label for="case-upper">MAIÚSCULAS</label>
+                        </div>
+                        <div class="radio-group">
+                            <input type="radio" id="case-lower" name="case-conversion">
+                            <label for="case-lower">minúsculas</label>
+                        </div>
+                        <div class="radio-group">
+                            <input type="radio" id="case-capitalize" name="case-conversion">
+                            <label for="case-capitalize">Capitalizar Palavras</label>
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <div class="option-title">
+                            <i class="fas fa-exchange-alt"></i> Localizar e Substituir
+                        </div>
+                        <div class="option-description">
+                            Substitua textos específicos por outros
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="find-text" class="char-input" placeholder="Texto a localizar">
+                            <input type="text" id="replace-text" class="char-input" placeholder="Substituir por">
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="use-regex">
+                            <label for="use-regex">Usar expressões regulares</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-input-container">
+                    <div class="option-title">
+                        <i class="fas fa-paste"></i> Ou Cole seu Texto Diretamente
+                    </div>
+                    <textarea id="direct-text-input" placeholder="Cole seu texto aqui para processar diretamente sem precisar de arquivo..."></textarea>
+                    <button id="process-text-btn" class="btn-process">Processar Texto</button>
+                </div>
+                
+                <div id="preview-container" class="preview-container">
+                    <div class="preview-header">
+                        <div class="preview-title">
+                            <i class="fas fa-eye"></i> Pré-visualização
+                        </div>
+                        <div class="preview-controls">
+                            <label for="preview-lines">Linhas: </label>
+                            <select id="preview-lines">
+                                <option value="5">5</option>
+                                <option value="10" selected>10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all">Todas</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="comparison-view">
+                        <div class="comparison-column">
+                            <div class="comparison-header">Original</div>
+                            <div id="preview-original" class="preview-content"></div>
+                        </div>
+                        <div class="comparison-column">
+                            <div class="comparison-header">Processado</div>
+                            <div id="preview" class="preview-content"></div>
+                        </div>
+                    </div>
+                    <div class="download-options">
+                        <select id="encoding-select">
+                            <option value="UTF-8" selected>UTF-8</option>
+                            <option value="ISO-8859-1">ISO-8859-1 (Latin-1)</option>
+                            <option value="Windows-1252">Windows-1252</option>
+                        </select>
+                        <button id="download-btn" class="btn-download">
+                            <i class="fas fa-file-download"></i> Baixar Arquivo Processado
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <h3><i class="fas fa-info-circle"></i> Como usar:</h3>
+                    <ol>
+                        <li>Selecione seu arquivo de texto (TXT ou CSV) ou cole o texto diretamente</li>
+                        <li>Especifique os caracteres que deseja remover ou marque as opções pré-definidas</li>
+                        <li>Use as opções de conversão de texto e localizar/substituir conforme necessário</li>
+                        <li>Visualize o resultado na pré-visualização lado a lado</li>
+                        <li>Selecione a codificação desejada e baixe o arquivo processado</li>
+                    </ol>
+                    <p><strong>Segurança:</strong> Todo o processamento ocorre localmente no seu navegador. Seus dados não são enviados para nenhum servidor.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Ferramenta de Limpeza de Texto &copy; <span id="year"></span> | Processamento local de arquivos</p>
+        </div>
+    </div>
+
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Processando...</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
